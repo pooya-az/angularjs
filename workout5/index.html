@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html data-ng-app="MyApp">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Pooya.Azarpour">
+	<meta name="description" content="workout 5">
+	<meta name="keyword" content="workout 5">
+	<title>Workout 5</title>
+
+	<link rel="shortcut icon" href="assets/images/favicon.png">
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="assets/stylesheets/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/stylesheets/fontawesome/font-awesome.min.css">
+
+	<link rel="stylesheet" href="assets/stylesheets/jquery-ui/jquery-ui.min.css">
+</head>
+<body>
+
+	<header>
+		<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<p class="navbar-brand">Angular Routing Example</p>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<section class="container">
+		<article class="welcome">
+			<h1> Welcome to first my angular js app. </h1>
+			<p>
+				For add or view user list please use menu items.
+			</p>
+		</article>
+
+		<hr>
+
+		<article data-ng-controller="AddController">
+			<div class="alert alert-{{ alert.type }}" data-ng-show="alert.show">
+				<strong>{{ alert.message }}</strong>
+			</div>
+
+			<form method="post" name="addUserForm" data-ng-submit="submitUser()" novalidate>
+				<div class="row">
+					<div class="col-md-6">
+						<fieldset class="form-group">
+							<label for="firstname">First name </label>
+							<input type="text" class="form-control" name="firstname" id="firstname" placeholder="Enter your first name" data-ng-model="user.firstname" data-ng-required="true" data-ng-minlength="{{ constant.form_required.min_firstname }}" data-ng-maxlength="{{ constant.form_required.max_firstname }}" data-ng-pattern="/^[a-zA-Z]+$/">
+
+							<span class="text-danger" data-ng-show="addUserForm.firstname.$touched && addUserForm.firstname.$invalid && addUserForm.firstname.$error.required">The first name is required.</span>
+							<span class="text-danger" data-ng-show="addUserForm.firstname.$error.minlength">The first name must be at least {{ constant.form_required.min_firstname }} characters.</span>
+							<span class="text-danger" data-ng-show="addUserForm.firstname.$error.maxlength">The first name must be maximum {{ constant.form_required.max_firstname }} characters.</span>
+							<span class="text-danger" data-ng-show="addUserForm.firstname.$error.pattern">The first name must be alphabetic character.</span>
+						</fieldset>
+					</div>
+
+					<div class="col-md-6">
+						<fieldset class="form-group">
+							<label for="lastname">Last name</label>
+							<input type="text" class="form-control" name="lastname" id="lastname" placeholder="Enter your last name" data-ng-model="user.lastname" data-ng-required="true" data-ng-minlength="{{ constant.form_required.min_lastname }}" data-ng-maxlength="{{ constant.form_required.max_lastname }}" data-ng-pattern="/^[a-zA-Z]+$/">
+
+							<span class="text-danger" data-ng-show="addUserForm.lastname.$touched && addUserForm.lastname.$invalid && addUserForm.lastname.$error.required">The last name is required.</span>
+							<span class="text-danger" data-ng-show="addUserForm.lastname.$error.minlength">The last name must be at least {{ constant.form_required.min_lastname }} characters.</span>
+							<span class="text-danger" data-ng-show="addUserForm.lastname.$error.maxlength">The last name must be maximum {{ constant.form_required.max_lastname }} characters.</span>
+							<span class="text-danger" data-ng-show="addUserForm.lastname.$error.pattern">The last name must be alphabetic character.</span>
+						</fieldset>
+					</div>
+				</div>
+
+				<hr>
+
+				<div class="row">
+					<div class="col-md-4">
+						<fieldset class="form-group">
+							<label for="nationalcode">National code</label>
+							<input type="text" class="form-control" name="nationalcode" id="nationalcode" placeholder="Enter your national code" data-ng-model="user.nationalcode" data-ng-required="true" data-ng-minlength="{{ constant.form_required.length_nationalcode }}" data-ng-maxlength="{{ constant.form_required.length_nationalcode }}" data-ng-pattern="/^\d+$/">
+
+							<span class="text-danger" data-ng-show="addUserForm.nationalcode.$touched && addUserForm.nationalcode.$invalid && addUserForm.nationalcode.$error.required">The national code is required.</span>
+							<span class="text-danger" data-ng-show="addUserForm.nationalcode.$error.minlength || addUserForm.nationalcode.$error.maxlength">The national code must be {{ constant.form_required.length_nationalcode }} characters.</span>
+							<span class="text-danger" data-ng-show="addUserForm.nationalcode.$error.pattern">The national code must be numberic character.</span>
+							<span class="text-danger" data-ng-show="addUserForm.nationalcode.$error.exist">A national code with this numbers is already exists.</span>
+						</fieldset>
+					</div>
+
+					<div class="col-md-4">
+						<fieldset class="form-group">
+							<label for="birthday">Birthday date</label>
+							<input type="text" class="form-control" name="birthday" id="birthday" placeholder="Enter your birthday" data-datepicker="" data-datepicker-validate="" data-ng-model="user.birthday" data-ng-required="true" data-ng-pattern="/^[0-9]{4}\/[0-9]{2}\/[0-9]{2}$/">
+
+							<span class="text-danger" data-ng-show="addUserForm.birthday.$touched && addUserForm.birthday.$invalid && addUserForm.birthday.$error.required">The birthday date is required.</span>
+							<span class="text-danger" data-ng-show="addUserForm.birthday.$error.pattern || addUserForm.birthday.$error.validdate">The birthday date must be dd/mm/yy character.</span>
+						</fieldset>
+					</div>
+
+					<div class="col-md-4">
+						<fieldset class="form-group">
+							<label for="fathername">Father name</label>
+							<input type="text" class="form-control" name="fathername" id="fathername" placeholder="Enter your father name" data-ng-model="user.fathername" data-ng-required="true" data-ng-minlength="{{ constant.form_required.min_fathername }}" data-ng-maxlength="{{ constant.form_required.max_fathername }}" data-ng-pattern="/^[a-zA-Z]+$/">
+
+							<span class="text-danger" data-ng-show="addUserForm.fathername.$touched && addUserForm.fathername.$invalid && addUserForm.fathername.$error.required">The father name is required.</span>
+							<span class="text-danger" data-ng-show="addUserForm.fathername.$error.minlength">The father name must be at least {{ constant.form_required.min_fathername }} characters.</span>
+							<span class="text-danger" data-ng-show="addUserForm.fathername.$error.maxlength">The father name must be maximum {{ constant.form_required.max_fathername }} characters.</span>
+							<span class="text-danger" data-ng-show="addUserForm.fathername.$error.pattern">The father name must be alphabetic character.</span>
+						</fieldset>
+					</div>
+				</div>
+
+				<hr>
+
+				<fieldset class="form-group">
+					<label for="info">Information</label>
+					<textarea class="form-control" name="info" id="info" placeholder="Enter your information" rows="8" cols="40" style="resize: vertical;" data-ng-model="user.info"></textarea>
+				</fieldset>
+
+				<button type="submit" class="btn btn-primary" data-ng-show="showAdd" data-ng-disabled="addUserForm.$invalid"><i class="fa fa-plus"></i> Add user</button>
+				<button type="submit" class="btn btn-success" data-ng-show="!showAdd" data-ng-disabled="addUserForm.$invalid"><i class="fa fa-refresh"></i> Update user</button>
+				<button type="button" class="btn btn-warning" data-ng-show="!showAdd">Cancel</button>
+			</form>
+		</article>
+
+		<hr>
+
+		<article data-ng-controller="ViewController">
+			<div class="alert alert-warning" data-ng-show="!users.length">
+				<p>
+					No one exist in users list.
+				</p>
+			</div>
+
+			<br>
+
+			<table class="table" data-ng-show="users.length">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Name</th>
+						<th>Family</th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td></td>
+						<td colspan="3"><label><input type="search" class="form-control" data-ng-model="searchFilter"></label></td>
+						<td></td>
+					</tr>
+
+					<tr data-ng-repeat="obj in users | filter: searchFilter | limitItem: countObject:startLimit">
+					<!-- <tr data-ng-repeat="obj in users | filter: searchFilter"> -->
+						<td> {{ $index + 1 }} </td>
+						<td> {{ obj.firstname }} </td>
+						<td> {{ obj.lastname }} </td>
+						<td>
+							<a href="#collapse-{{obj.id}}">Collapse User</a>
+							<ul id="collapse-{{obj.id}}" class="collapse" style="margin: 13px 0 0 -26px;">
+								<li>National Code: {{ obj.nationalcode }} </li>
+								<li>birthday: {{ obj.birthday }} </li>
+								<li>Father Name: {{ obj.fathername }} </li>
+								<li>Information: {{ obj.info }} </li>
+							</ul>
+						</td>
+						<td>
+							<ul class="list-inline">
+								<li>
+									<button type="button" class="btn btn-primary btn-select-user" data-uid="{{ obj.id }}">
+										<i class="fa fa-external-link"></i>
+										Select
+									</button>
+								</li>
+								<li>
+									<a href="#delete/{{ obj.id }}" class="btn btn-danger">
+										<i class="fa fa-trash-o"></i>
+										Delete
+									</a>
+								</li>
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<ul class="pagination" data-ng-show="users.length && diving > 1">
+				<li data-ng-repeat="page in repeatNumber(diving)" data-ng-class="currentPage == page ? 'active' : ''">
+					<a href="#page" data-page="{{ page }}">{{ page }}</a>
+				</li>
+			</ul>
+		</article>
+	</section>
+
+	<script src="assets/js/jquery/jquery.min.js"></script>
+	<script src="assets/js/jquery-ui/jquery-ui.min.js"></script>
+	<script src="assets/js/bootstrap/bootstrap.min.js"></script>
+
+	<script src="assets/js/angular/angular.min.js"></script>
+	<script src="assets/js/angular/angular-main.js"></script>
+</body>
+</html>
