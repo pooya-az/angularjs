@@ -190,7 +190,16 @@ angular.module('ParentController', [])
 	});
 
 	$scope.$on('clearForm', function(event, arg) {
-		clearForm();
+		var phase = $scope.$root.$$phase;
+		if (phase == '$apply' || phase == '$digest') {
+			clearForm();
+			$scope.showAdd = true;
+		} else {
+			$scope.$apply(function() {
+				clearForm();
+				$scope.showAdd = true;
+			});
+		}
 	});
 
 	$scope.submitUser = function() {
@@ -247,9 +256,10 @@ angular.module('ParentController', [])
 		} else if(!datePattern.test($scope.user.birthday)) {
 			$scope.addUserForm.birthday.$error.pattern = true;
 		} else {
-			var dd = $scope.user.birthday.substr(0,2);
-			var mm = $scope.user.birthday.substr(3,2);
-			var yy = $scope.user.birthday.substr(6,4);
+			var yy = $scope.user.birthday.substr(0,4);
+			var mm = $scope.user.birthday.substr(5,2);
+			var dd = $scope.user.birthday.substr(8,2);
+
 			if((dd.length != 0 && dd < 32) && (mm.length != 0 && mm < 13) && (yy.length != 0 && yy > 1000)) {
 				$scope.addUserForm.birthday.$error.validdate = false;
 			} else {
@@ -277,7 +287,6 @@ angular.module('ParentController', [])
 			$scope.alert.show = true;
 			$scope.alert.type = 'success';
 			$scope.alert.message = 'Your user has been inserted.';
-			$scope.showAdd = true;
 
 			$rootScope.$broadcast('addUser', angular.copy($scope.user));
 		} else {
@@ -335,6 +344,24 @@ angular.module('ParentController', [])
 		return find;
 	};
 
+	var deleteUserById = function(id) {
+		if(id >= 0) {
+			angular.forEach($scope.users, function(value, key) {
+				if(value.id == Number(id)) {
+					$scope.$apply(function() {
+						$scope.users.splice(key, 1);
+						$scope.diving = Math.ceil($scope.users.length / COUNT_OBJECT);
+					});
+					return;
+				}
+			});
+
+			return true;
+		}
+
+		return false;
+	};
+
 	var unselectedUser = function() {
 		$element.find('.btn-select-user[data-uid="' + $scope.uid + '"]').removeClass('btn-success').addClass('btn-primary').html('<i class="fa fa-external-link"></i> Select');
 		$scope.uid = -1;
@@ -366,6 +393,18 @@ angular.module('ParentController', [])
 
 	$element.find('table').on('click', 'a', function(event) {
         event.preventDefault();
+		var element = angular.element(this);
+		var numberPattern = /^\d+$/;
+		var uid = element.attr('data-uid');
+
+		if(typeof(uid) != 'undefined' && numberPattern.test(uid)) {
+			deleteUserById(uid);
+
+			if($scope.uid != -1) {
+				$rootScope.$broadcast('clearForm', true);
+				$scope.uid = -1;
+			}
+		}
 	});
 
 	$element.find('table').on('click', 'button', function() {
@@ -383,7 +422,7 @@ angular.module('ParentController', [])
 	});
 
     $scope.$on('unselectUser', function(event, arg) {
-		unselectedUser()
+		unselectedUser();
     });
 
 	$scope.$on('addUser', function(event, arg) {

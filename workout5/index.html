@@ -165,7 +165,7 @@
 								<li>Information: {{ obj.info }} </li>
 							</ul>
 						</td>
-						<td>
+						<td class="option-user">
 							<ul class="list-inline">
 								<li>
 									<button type="button" class="btn btn-primary btn-select-user" data-uid="{{ obj.id }}">
@@ -174,7 +174,7 @@
 									</button>
 								</li>
 								<li>
-									<a href="#delete/{{ obj.id }}" class="btn btn-danger">
+									<a href="#delete" data-uid="{{ obj.id }}" class="btn btn-danger">
 										<i class="fa fa-trash-o"></i>
 										Delete
 									</a>
